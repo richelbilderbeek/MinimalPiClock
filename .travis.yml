@@ -1,0 +1,19 @@
+language: cpp
+compiler: gcc
+
+install:
+  # arduino
+  - sudo apt-get install arduino
+  # ino
+  - cd ..
+  - git clone git://github.com/amperka/ino.git
+  - cd ino
+  - sudo make install
+  - sudo easy_install `cat requirements.txt`
+  - cd ..
+  - cd MinimalPiClock
+  # Time library
+  - sudo git clone https://github.com/PaulStoffregen/Time.git /usr/share/arduino/libraries/Time
+
+script: 
+  - ino build
