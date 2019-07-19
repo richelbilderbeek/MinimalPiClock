@@ -47,3 +47,7 @@ Yes, it is rather easy. All schematics and code are on this GitHub.
 ## Will you make a MinimalPiClock for me?
 
 No. But I can help. Or try your local hacker- or makerspace.
+
+## Where do I download the `Time` library?
+
+Here: [https://github.com/PaulStoffregen/Time](https://github.com/PaulStoffregen/Time)
