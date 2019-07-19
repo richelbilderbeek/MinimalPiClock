@@ -14,7 +14,7 @@ It's an Arduino project for a clock that beeps at pi o'clock PM.
 
 ![Minimal Pi Clock from the back](MinimalPiClockBack.jpg)
 
-![Minimal Pi Clock schematics](MinimalPiSchematics.png)
+![Minimal Pi Clock schematics](MinimalPiClockSchematics.png)
 
 ## FAQ
 
