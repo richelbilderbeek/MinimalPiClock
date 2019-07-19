@@ -5,6 +5,7 @@
 
 2015-07-05: v.1.0: Initial version
 2015-08-21: v.1.1: Added beep if A0 is connected to GND at startup
+2019-07-19: v.1.2: Always beep at startup
 
 Piezo:
   
@@ -26,9 +27,6 @@ Piezo:
 //#define NDEBUG
 
 const int pin_piezo = 8; //The pin connected to the piezo
-
-//Connect this pin to ground at startup and a beep will follow
-const int pin_debug = A0; 
 
 //The pin connected to the error LED
 const int pin_error = 13; 
@@ -65,25 +63,16 @@ void TestTime()
 void setup() 
 {
   pinMode(pin_piezo, OUTPUT);
-  pinMode(pin_debug, INPUT);
   pinMode(pin_error, OUTPUT);
   Serial.begin(9600); //Cannot be used: chip is used stand-alone
   #ifndef NDEBUG
-  Serial.println("PiClock v. 1.1 (debug version)");
+  Serial.println("PiClock v. 1.2 (debug version)");
   #else //NDEBUG
-  Serial.println("PiClock v. 1.1 (release version)");
+  Serial.println("PiClock v. 1.2 (release version)");
   #endif //NDEBUG
   TestTime();
   
-  {
-    const int value_debug = analogRead(pin_debug);
-    Serial.print("Value debug: ");
-    Serial.println(value_debug);
-    if (value_debug <= 1) 
-    { 
-      tone(pin_piezo,3142,314);
-    }
-  }
+  tone(pin_piezo,3142,314);
 }
 
 void loop() 
