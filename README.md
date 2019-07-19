@@ -14,6 +14,8 @@ It's an Arduino project for a clock that beeps at pi o'clock PM.
 
 ![Minimal Pi Clock from the back](MinimalPiClockBack.jpg)
 
+![Minimal Pi Clock schematics](MinimalPiSchematics.png)
+
 ## FAQ
 
 ### How to set the time
@@ -32,6 +34,10 @@ Yes.
 
 Yes.
 
+## Can the MinimalPiClock be powered by 3x AAA batteries?
+
+Yes.
+
 ## Can the MinimalPiClock be powered by 4x AAA batteries?
 
 Yes.
@@ -47,6 +53,10 @@ Yes, it is rather easy. All schematics and code are on this GitHub.
 ## Will you make a MinimalPiClock for me?
 
 No. But I can help. Or try your local hacker- or makerspace.
+
+## Do you think using an ATMEGA328 chip is overkill here?
+
+Yes.
 
 ## Where do I download the `Time` library?
 
