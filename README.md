@@ -1,6 +1,8 @@
 # MinimalPiClock
 
-[![Build Status](https://travis-ci.org/richelbilderbeek/MinimalPiClock.svg?branch=master)](https://travis-ci.org/richelbilderbeek/MinimalPiClock)
+Branch|[![Travis CI logo](pics/TravisCI.png)](https://travis-ci.org)
+---|---
+`master`|[![Build Status](https://travis-ci.org/richelbilderbeek/MinimalPiClock.svg?branch=master)](https://travis-ci.org/richelbilderbeek/MinimalPiClock)
 
 The MinimalPiClock is [one of my machines](https://github.com/richelbilderbeek/Machines) that uses Arduino.
 
