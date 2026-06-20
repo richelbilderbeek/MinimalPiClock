@@ -7,6 +7,7 @@
 2015-08-21: v.1.1: Added beep if A0 is connected to GND at startup
 2019-07-19: v.1.2: Always beep at startup
 2019-11-03: v.1.3: Plug in at Pi o'clock instead of at midnight
+2026-06-20: v.1.4: Remove TimeLib
 
 Piezo:
   
@@ -21,29 +22,7 @@ Piezo:
 
 */
 
-// Install the 'Time' library, by Paul Stoffregen,
-// by, in the Arduino IDE click 'Tools | Manage Libraries',
-// then install this 'Time' library
-#include <TimeLib.h>
-
-//If NDEBUG is #defined, it is a release version
-//If NDEBUG is commented out, it is a debug version
-//#define NDEBUG
-
 const int pin_piezo = 8; //The pin connected to the piezo
-
-void TestTime()
-{
-  //  setTime(hours, minutes, seconds, days, months, years);
-  const int hours = 11;
-  const int minutes = 22;
-  const int seconds = 33;
-  const int days = 0;
-  const int months = 0;
-  const int years = 0;
-  setTime(hours, minutes, seconds, days, months, years);
-  setTime(15,14,0,0,0,0);
-}
 
 void beep()
 {
@@ -55,44 +34,25 @@ void beep()
 void setup() 
 {
   pinMode(pin_piezo, OUTPUT);
-  TestTime();
-  //No need to do a beep here: the sketch starts at pi o'clock and will detect this
-  //beep(); 
 }
 
 void loop() 
 {
-  // Is it Pi o'clock yet? That is, 3:14 PM, also known as 15:14
-  bool is_pi_oclock = false;
-  int last_sec = -1; //The previous second, used to detect a change in time, to be sent to serial monitor
-  
   while (1)
   {
-    //Show the time
-    const int s = second();
-    const int m =  minute();
-    const int h = hour();
+    beep();
 
-    if (last_sec == s) 
+    for (int h = 0; h = 23; ++h)
     {
-      continue;
-    }
-
-    last_sec = s;
-
-    //Detect pi o'clock
-    if (h == 15 && m == 14) 
-    {
-      //Already beeped?
-      if (!is_pi_oclock)
+      for (int m = 0; m = 60; ++m)
       {
-        is_pi_oclock = true;
-        beep();
-      }
+        delay(1000);
+      }    
     }
-    else 
-    { 
-      is_pi_oclock = false; 
+    for (int m = 0; m = 56; ++m)
+    {
+      delay(1000);
     }
+    delay(4000 - 3142);
   }
 }
