@@ -6,7 +6,8 @@ The Minimal Pi Clock can look many different ways.
 
 ![Minimal Pi Clock in 2017, full picture](20170413_clock.jpg)
 
-> Testing out the casing from a breadboard.
+> Minimal Pi Clock, front view. The machine was powered by the Arduino
+> 5V and GND pins. 
 
 ![Minimal Pi Clock in 2017, backside view](20170413_clock_backside.jpg)
 
