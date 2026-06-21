@@ -6,16 +6,30 @@ The Minimal Pi Clock can look many different ways.
 
 ![Minimal Pi Clock in 2017, full picture](20170413_clock.jpg)
 
+> Testing out the casing from a breadboard.
+
 ![Minimal Pi Clock in 2017, backside view](20170413_clock_backside.jpg)
 
+> Minimal Pi Clock, back view
+
 ![Minimal Pi Clock in 2017, side view](20170413_clock_side.jpg)
+
+> Minimal Pi Clock, side view
 
 ## 2019
 
 ![Minimal Pi Clock in 2019, PCB front view](20191117_1.jpg)
 
+> PCB is ready, front view
+
 ![Minimal Pi Clock in 2019, PCB back view](20191117_2.jpg)
+
+> PCB is ready, back view
 
 ![Minimal Pi Clock in 2019, in casing, front view](20191117_3.jpg)
 
+> Minimal Pi Clock, front view
+
 ![Minimal Pi Clock in 2019, in casing, back view](20191117_4.jpg)
+
+> Minimal Pi Clock, back view
