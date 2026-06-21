@@ -21,7 +21,7 @@ theme:
   palette:
     primary: black
 
-  logo: logo/r_written.svg
+  logo: logo/r_written.png
 
   features:
     - toc.integrate
