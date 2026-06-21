@@ -10,11 +10,27 @@ $fn=32;
 $slop = 0.075;
 d = thread_diameter;
 pitch = 1; // mm, space between threads
-starts=3;
-xdistribute(200){
-    threaded_rod(l = thread_depth, pitch=pitch, d=d,starts=starts,anchor=BOTTOM,end_len=.44);
+starts = 3;
+
+
+module outer_screw() {
+  intersection() {
     threaded_nut(nutwidth= thread_diameter + 20,id = thread_diameter,h = thread_depth,pitch=pitch,starts=starts,anchor=BOTTOM,bevel=false,ibevel=false);
+    cylinder(100, 50, 50);
+  }
 }
+
+outer_screw();
+
+module inner_screw() {
+  difference() {
+    threaded_rod(l = thread_depth, pitch=pitch, d=d,starts=starts,anchor=BOTTOM,end_len=.44);
+    cylinder(100, 40, 40);
+  }
+}
+
+inner_screw();
+
 
 /*
 
