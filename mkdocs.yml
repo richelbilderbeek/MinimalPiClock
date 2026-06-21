@@ -6,6 +6,9 @@ edit_uri: blob/main/docs/
 
 nav:
   - Main page: README.md
+  - Photos: photos/README.md
+  - Schematic: schematic/README.md
+  - Casing: casing/README.md
   - FAQ: faq.md
   - Contributing: CONTRIBUTING.md
 
