@@ -1,52 +1,26 @@
-# Minimal Pi Clock
+# Lördagskurserna
 
-The Minimal Pi Clock is [one of my machines](https://github.com/richelbilderbeek/Machines) that uses Arduino.
+<!-- markdownlint-disable MD013 --><!-- Table rows must be put on one line, hence 80 chars is unavoidable -->
 
-It's an Arduino project for a clock that beeps at pi o'clock PM
-(i.e. 3:14 PM or 15:14). It can easily be made to beep at 3:14 AM
-for the purists :-)
+[![Check bash style](https://github.com/richelbilderbeek/minimal_pi_clock/actions/workflows/check_bash_style.yaml/badge.svg?branch=main)](https://github.com/richelbilderbeek/minimal_pi_clock/actions/workflows/check_bash_style.yaml)
+[![Check links](https://github.com/richelbilderbeek/minimal_pi_clock/actions/workflows/check_links.yaml/badge.svg?branch=main)](https://github.com/richelbilderbeek/minimal_pi_clock/actions/workflows/check_links.yaml)
+[![Check Markdown](https://github.com/richelbilderbeek/minimal_pi_clock/actions/workflows/check_markdown.yaml/badge.svg?branch=main)](https://github.com/richelbilderbeek/minimal_pi_clock/actions/workflows/check_markdown.yaml)
+[![Create website](https://github.com/richelbilderbeek/minimal_pi_clock/actions/workflows/create_website.yaml/badge.svg?branch=main)](https://github.com/richelbilderbeek/minimal_pi_clock/actions/workflows/create_website.yaml)
 
-![Minimal Pi Clock](Minimal Pi Clock.jpg)
+<!-- markdownlint-enable MD013 -->
 
-![Minimal Pi Clock from the side](Minimal Pi ClockSide.jpg)
+[Go to our nicely rendered website](https://richelbilderbeek.github.io/minimal_pi_clock/).
 
-![Minimal Pi Clock from the back](Minimal Pi ClockBack.jpg)
+- [Contributing](docs/CONTRIBUTING.md)
 
-![Minimal Pi Clock schematics](Minimal Pi ClockSchematics.png)
+## Files used by continuous integration scripts
 
-## FAQ
+<!-- markdownlint-disable MD013 --><!-- Table rows must be put on one line, hence 80 chars is unavoidable -->
 
-### How to set the time
+Filename                                    |Descriptions
+--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------
+[`mlc_config.json`](mlc_config.json)        |Configuration of the link checker, use `markdown-link-check --config mlc_config.json --quiet docs/**/*.md` to do link checking locally
+[`.markdownlint.jsonc`](.markdownlint.jsonc)|Configuration of the Markdown linter, use `markdownlint "**/*.md"` to do markdown linting locally. The name of this file is a default name.
+[`.markdownlintignore`](.markdownlintignore)|Files ignored by the Markdown linter, use `markdownlint "**/*.md"` to do markdown linting locally. The name of this file is a default name.
 
-Unplug its power. Plug it in at pi o'clock.
-
-### How to read the time
-
-You cannot. It only beeps at pi o'clock.
-
-### How to power the Minimal Pi Clock
-
-The Minimal Pi Clock can be powered by
-plugging the USB cable into most machines an USB ports,
-such as laptops.
-
-### How to make a casing for a Minimal Pi Clock
-
-My favorite casing for the Mininal Pi Clock
-can be found at [the 'casing' page](casing/README.md).
-
-## How expensive is the Minimal Pi Clock?
-
-About ten euros in total.
-
-## Can I make a Minimal Pi Clock myself?
-
-Yes, it is rather easy. All schematics and code are on this GitHub.
-
-## Will you make a Minimal Pi Clock for me?
-
-No. But I can help. Or try your local hacker- or makerspace.
-
-## Do you think using an ATMEGA328 chip is overkill here?
-
-Yes.
+<!-- markdownlint-enable MD013 -->
