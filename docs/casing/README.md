@@ -12,7 +12,7 @@ I wanted a design without scaffolding, hence I opted
 to glue to pieces together.
 
 However, I was unhappy with this design, as it involved too much glue
-and the glue was not strong enough. 
+and the glue was not strong enough.
 
 I realized that
 I can instead go for an open box design, where only a
