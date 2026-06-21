@@ -1,4 +1,4 @@
-# Lördagskurserna
+# Minimal Pi Clock
 
 <!-- markdownlint-disable MD013 --><!-- Table rows must be put on one line, hence 80 chars is unavoidable -->
 
