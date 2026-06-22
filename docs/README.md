@@ -10,6 +10,7 @@ for the purists :-)
 
 - [Photos](photos/README.md)
 - [Code](src/README.md)
+- [Parts list](parts_list/README.md)
 - [Schematic](schematic/README.md)
 - [Casing](casing/README.md)
 - [FAQ](faq.md)
