@@ -30,6 +30,9 @@ Yes, it is rather easy. All schematics and code are on this website.
 ## Will you make a Minimal Pi Clock for me?
 
 No. But I can help. Or try your local hacker- or makerspace.
+One example is
+[my Minimal Pi Clock workshop](https://richelbilderbeek.github.io/pi_clock_workshop/)
+at [the Uppsala Makerspace.](https://www.uppsalamakerspace.se/).
 
 ## Do you think using an ATMEGA328 chip is overkill here?
 
