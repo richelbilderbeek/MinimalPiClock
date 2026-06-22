@@ -16,14 +16,14 @@ nav:
 
 theme:
   name: material
-  greetings: Välkommen till Lördagskurserna
+  greetings: Welcome to the Minimal Pi Clock website
   font:
     text: Lato
     code: JetBrains Mono
   palette:
     primary: black
 
-  logo: logo/r_written.png
+  logo: logo/r_written_with_white_backround.png
 
   features:
     - toc.integrate
