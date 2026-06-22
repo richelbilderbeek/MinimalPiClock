@@ -6,7 +6,7 @@
 
 Build the schematic as such,
 using the chip with The Minimal Pi Clock
-program on it. 
+program on it.
 
 ??? question "In which orientation must I have the chip?"
 

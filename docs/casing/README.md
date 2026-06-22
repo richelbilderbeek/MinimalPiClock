@@ -50,4 +50,3 @@ that I might as well make the clock spherical: it fits the theme better.
 For the screw, I dediced I needed to use
 [the Belfry OpenSCAD Library v2](https://github.com/BelfrySCAD/BOSL2).
 
-
