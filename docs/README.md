@@ -9,8 +9,8 @@ It's an Arduino project for a clock that beeps at pi o'clock PM
 for the purists :-)
 
 - [Photos](photos/README.md)
-- [Code](src/README.md)
 - [Parts list](parts_list/README.md)
+- [Code](src/README.md)
 - [Schematic](schematic/README.md)
 - [Casing](casing/README.md)
 - [FAQ](faq.md)

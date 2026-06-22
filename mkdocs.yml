@@ -8,6 +8,7 @@ nav:
   - Main page: README.md
   - Photos: photos/README.md
   - Parts list: parts_list/README.md
+  - Code: src/README.md
   - Schematic: schematic/README.md
   - Casing: casing/README.md
   - FAQ: faq.md

@@ -25,4 +25,6 @@ Picture                       |Name                                 |Description
 .                             |Shipping                             |The cost to ship         |35
 .                             |Total                                |Sum of all costs         |160
 
-This website is not sponsored by the supplier :-)
+??? question "Are you sponsored by the example supplier?"
+
+    No.
