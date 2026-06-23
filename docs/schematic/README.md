@@ -48,5 +48,5 @@ program on it.
 
     The range of the chip is wider than 5 volts.
 
-Upon powering this, the buzzer fill go off for
+Upon powering this, the buzzer will go off for
 a little more than three seconds.
