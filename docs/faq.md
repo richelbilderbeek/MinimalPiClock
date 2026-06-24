@@ -31,7 +31,7 @@ Yes, it is rather easy. All schematics and code are on this website.
 
 No. But I can help. Or try your local hacker- or makerspace.
 One example is
-[my Minimal Pi Clock workshop](https://richelbilderbeek.github.io/pi_clock_workshop/)
+[my 'Build a bare-bone machine' workshop](https://richelbilderbeek.github.io/build_bare_bone_arduino_machine_workshop/)
 at [the Uppsala Makerspace.](https://www.uppsalamakerspace.se/).
 
 ## Do you think using an ATMEGA328 chip is overkill here?
