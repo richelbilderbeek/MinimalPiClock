@@ -62,17 +62,25 @@ module draw_nut(
   assert(pitch > 0);
   assert(air_gap > 0);
   assert(height > 0);
-  inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
-  outer_diameter = inner_diameter + wall_thickness;
-  threaded_nut(
-    shape="square", 
-    nutwidth = outer_diameter, 
-    id = inner_diameter, 
-    h = height, 
-    pitch = pitch,
-    ibevel = false,
-    spin = 180
-  );  
+  // Where the thread end
+  thread_inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
+  // Where the thread starts
+  thread_outer_diameter = thread_inner_diameter + wall_thickness;
+  // Where the object end
+  outer_diameter = thread_inner_diameter + wall_thickness;
+  intersection() {
+    threaded_nut(
+      shape = "square", 
+      nutwidth = outer_diameter, 
+      id = thread_inner_diameter, 
+      h = height, 
+      pitch = pitch,
+      ibevel = false,
+      spin = 180
+    );  
+    cylinder(height, d = outer_diameter, center = true);
+
+  }
 }
 
 // screw_outer_diameter: the outer diameter of the screw
@@ -118,11 +126,12 @@ module draw_nut(
 //                                                                                 //                                                                                 
 //                                                                                 
 module draw_connector(
-  hole_diameter = 10,
+  hole_diameter = 100,
   wall_thickness = 2,
-  pitch = 3,
+  pitch = 4,
   air_gap = 1,
   height = 10,
+  second_part_translation = [0, 0, 0]
 ) {
   assert(hole_diameter > 0);
   assert(wall_thickness > 0);
@@ -139,21 +148,45 @@ module draw_connector(
       height = height
     );
   // Outer, blue, part
-  color([0, 0, 1])
-    draw_nut(
-      hole_diameter = hole_diameter,
-      wall_thickness = wall_thickness,
-      pitch = pitch,
-      air_gap = air_gap,
-      height = height
-    );
+  translate(second_part_translation)
+    color([0, 0, 1])
+      draw_nut(
+        hole_diameter = hole_diameter,
+        wall_thickness = wall_thickness,
+        pitch = pitch,
+        air_gap = air_gap,
+        height = height
+      );
 
 }
 
-difference() {
-  draw_connector();
-    translate([-50,0,-50])
-        cube([100, 100, 100]);
+
+display = "part";
+//display = "cutout";
+
+hole_diameter = 100;
+wall_thickness = 2;
+pitch = 4;
+air_gap = 1;
+height = 10;
+
+if (display == "cutout") {
+  // Show cutout
+  difference() {
+    draw_connector();
+      translate([-500,0,-500])
+          cube([1000, 100, 1000]);
+  }
+} 
+else {
+  draw_connector(
+    hole_diameter = hole_diameter,
+    wall_thickness = wall_thickness,
+    pitch = pitch,
+    air_gap = air_gap,
+    height = height,
+    second_part_translation = [hole_diameter + wall_thickness + pitch + air_gap + wall_thickness, 0, 0]
+  );
 }
 
 //color([1,0,0])
