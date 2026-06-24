@@ -331,14 +331,13 @@ display = "printable";
 
 if (display == "printable") {
 
-  rotate([180, 0, 0])
-    draw_lower_half(
-      hole_diameter = hole_diameter,
-      wall_thickness = wall_thickness,
-      pitch = pitch,
-      air_gap = air_gap,
-      height = height
-    );
+  draw_lower_half(
+    hole_diameter = hole_diameter,
+    wall_thickness = wall_thickness,
+    pitch = pitch,
+    air_gap = air_gap,
+    height = height
+  );
 
   thread_inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
   thread_outer_diameter = thread_inner_diameter + wall_thickness;
@@ -346,6 +345,7 @@ if (display == "printable") {
   spere_diameter = outer_diameter + wall_thickness;
 
   translate([spere_diameter + air_gap, 0, 0])
+  rotate([180, 0, 0])
   draw_upper_half(
     hole_diameter = hole_diameter,
     wall_thickness = wall_thickness,
