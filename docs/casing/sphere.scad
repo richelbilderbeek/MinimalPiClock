@@ -1,7 +1,165 @@
-
 include <../../../BOSL2/std.scad>
 include <../../../BOSL2/threading.scad>
 
+
+// outer_diameter: the outer diameter of the part, where the thread ends
+// inner_diameter: the diameter of the hole
+// pitch: depth of the threads
+//
+
+//              *****       Air
+//          ***       ***          
+//        **             **        
+//       *                 *       
+//      *   Thread          *      
+//     *                     *     
+//    *          ***          *    
+//    *        **   **        *    
+//    *       *       *       *    
+//    *       *       *       *    
+//    *       * Hole  *       *    
+//    *       *       *       *    
+//    *        **   **        *    
+//    *          ***          *    
+//     *                     *     
+//      *                   *      
+//       *                 *       
+//        **             **        
+//          ***       ***          
+//              *****          
+//    
+//           |-------| inner_diameter
+//    |----------------------| outer_diameter
+module draw_bolt(
+  hole_diameter,
+  wall_thickness,
+  pitch = 1,
+  height = 10
+) {
+  assert(hole_diameter > 0);
+  assert(wall_thickness > 0);
+  assert(pitch > 0);
+  assert(height > 0);
+
+  // diameter where the thread starts
+  screw_inner_diameter = hole_diameter + wall_thickness;
+  screw_outer_diameter = screw_inner_diameter + pitch;
+  difference() {
+    threaded_rod(d = screw_outer_diameter, l = height, pitch = pitch);
+    cylinder(h = height, d = hole_diameter, center = true);
+  }
+}
+
+module draw_nut(
+  hole_diameter,
+  wall_thickness,
+  pitch,
+  air_gap,
+  height
+) {
+  assert(hole_diameter > 0);
+  assert(wall_thickness > 0);
+  assert(pitch > 0);
+  assert(air_gap > 0);
+  assert(height > 0);
+  inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
+  outer_diameter = inner_diameter + wall_thickness;
+  threaded_nut(
+    shape="square", 
+    nutwidth = outer_diameter, 
+    id = inner_diameter, 
+    h = height, 
+    pitch = pitch,
+    ibevel = false,
+    spin = 180
+  );  
+}
+
+// screw_outer_diameter: the outer diameter of the screw
+// inner_hole_diameter: the diameter of the inner hole
+
+
+
+//                XXXXXXXXXXX                                                      
+//           XXXXX           XXXXX                                                 
+//         XX     XXXXXXXXXXX     XX                                               
+//       XX   XXXX           XXXX   XX                                             
+//      X   XX    XXXXXXXXXXX    XX   X                                            
+//     X  XX   XXX           XXX   XX  X                                           
+//    X  X   XX    XXXXXXXXX    XX   X  X                                          
+//   X  X   X   XXX         XXX   X   X  X                                         
+//  X   X  X   X               X   X  X   X                                        
+//  X  X  X   X                 X   X  X  X                                        
+//  X  X  X   X      Hole       X   X  X  X                                        
+//  X  X  X   X                 X   X  X  X                                        
+//  X   X  X   X               X   X  X   X                                        
+//   X  X   X   XXX         XXX   X   X  X                                         
+//    X  X   XX    XXXXXXXXX    XX   X  X                                          
+//     X  XX   XXX           XXX   XX  X                                           
+//      X   XX    XXXXXXXXXXX    XX   X                                            
+//       XX   XXXX           XXXX   XX                                             
+//         XX     XXXXXXXXXXX     XX                                               
+//           XXXXX           XXXXX                                                 
+//                XXXXXXXXXXX                                                      
+//                                                                                 
+//                                                                                 
+//            |-----------------|     Hole diameter
+//        |---|                 |---| Vertical wall thickness of inner part 
+//        |-------------------------| Inner diameter of thread going inward
+//     |--|                         |--| Thread pitch inner part
+//     |-------------------------------| Outer diameter of thread going inward
+//
+//
+//        |-------------------------| Inner diameter of thread going inward
+//     |--|                         |--| Thread pitch outer part
+//     |-------------------------------| Outer diameter of thread going inward
+//  |--|                               |--| Vertical wall thickness of outer part
+//  |-------------------------------------| Outer diameter of sphere                                                                                
+//                                                                                 //                                                                                 
+//                                                                                 
+module draw_connector(
+  hole_diameter = 10,
+  wall_thickness = 2,
+  pitch = 3,
+  air_gap = 1,
+  height = 10,
+) {
+  assert(hole_diameter > 0);
+  assert(wall_thickness > 0);
+  assert(pitch > 0);
+  assert(air_gap > 0);
+  assert(pitch > air_gap, "The grooves must overlap vertically");
+  assert(height > 0);
+  // Inner, red, part
+  color([1, 0, 0])
+    draw_bolt(
+      hole_diameter = hole_diameter,
+      wall_thickness = wall_thickness,
+      pitch = pitch,
+      height = height
+    );
+  // Outer, blue, part
+  color([0, 0, 1])
+    draw_nut(
+      hole_diameter = hole_diameter,
+      wall_thickness = wall_thickness,
+      pitch = pitch,
+      air_gap = air_gap,
+      height = height
+    );
+
+}
+
+difference() {
+  draw_connector();
+    translate([-50,0,-50])
+        cube([100, 100, 100]);
+}
+
+//color([1,0,0])
+//  cube([25, 1, 1], true);
+
+/*
 
 thread_depth = 20;
 thread_diameter = 90;
@@ -20,7 +178,6 @@ module outer_screw() {
   }
 }
 
-outer_screw();
 
 module inner_screw() {
   difference() {
@@ -29,8 +186,24 @@ module inner_screw() {
   }
 }
 
-inner_screw();
+module display_all() {
+  //translate([200, 0, 0])
+  //  inner_screw();
+  //translate([400, 0, 0])
+  //  outer_screw();
+  difference() {
+    inner_screw();
+      cube([100, 100, 100]);
+  }
+  difference() {
+    outer_screw();
+      cube([100, 100, 100]);
+  }
 
+}
+
+display_all();
+*/
 
 /*
 
