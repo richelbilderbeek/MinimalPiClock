@@ -1,7 +1,7 @@
 include <../../../BOSL2/std.scad>
 include <../../../BOSL2/threading.scad>
 
-
+// Lower, inner, red, part
 // outer_diameter: the outer diameter of the part, where the thread ends
 // inner_diameter: the diameter of the hole
 // pitch: depth of the threads
@@ -33,8 +33,8 @@ include <../../../BOSL2/threading.scad>
 module draw_bolt(
   hole_diameter,
   wall_thickness,
-  pitch = 1,
-  height = 10
+  pitch,
+  height
 ) {
   assert(hole_diameter > 0);
   assert(wall_thickness > 0);
@@ -50,6 +50,7 @@ module draw_bolt(
   }
 }
 
+// Upper, outer, blue, part
 module draw_nut(
   hole_diameter,
   wall_thickness,
@@ -126,11 +127,11 @@ module draw_nut(
 //                                                                                 //                                                                                 
 //                                                                                 
 module draw_connector(
-  hole_diameter = 100,
-  wall_thickness = 2,
-  pitch = 4,
-  air_gap = 1,
-  height = 10,
+  hole_diameter,
+  wall_thickness,
+  pitch,
+  air_gap,
+  height,
   second_part_translation = [0, 0, 0]
 ) {
   assert(hole_diameter > 0);
@@ -160,25 +161,257 @@ module draw_connector(
 
 }
 
+module draw_shell(
+  hole_diameter,
+  wall_thickness,
+  pitch,
+  air_gap,
+  height
+) {
+  thread_inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
+  // Where the thread starts
+  thread_outer_diameter = thread_inner_diameter + wall_thickness;
+  // Where the out screw ends
+  outer_diameter = thread_inner_diameter + wall_thickness;
+  // The end of the sphere
+  spere_diameter = outer_diameter + wall_thickness;
+  color([0,1,0])
+  difference() {
+    sphere(d = spere_diameter);
+    sphere(d = outer_diameter);
+  }
 
-display = "part";
-//display = "cutout";
+}
 
-hole_diameter = 100;
+module draw_upper_sphere(
+  hole_diameter,
+  wall_thickness,
+  pitch,
+  air_gap,
+  height
+) {
+  thread_inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
+  // Where the thread starts
+  thread_outer_diameter = thread_inner_diameter + wall_thickness;
+  // Where the out screw ends
+  outer_diameter = thread_inner_diameter + wall_thickness;
+  // The end of the sphere
+  spere_diameter = outer_diameter + wall_thickness;
+  color([0,1,0])
+  difference() {
+    difference() {
+      sphere(d = spere_diameter);
+      sphere(d = outer_diameter);
+    };
+    translate([-(spere_diameter / 2), -(spere_diameter / 2), -spere_diameter - (height / 2)])
+    cube(spere_diameter);
+  }
+}
+
+module draw_lower_sphere(
+  hole_diameter,
+  wall_thickness,
+  pitch,
+  air_gap,
+  height
+) {
+  thread_inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
+  // Where the thread starts
+  thread_outer_diameter = thread_inner_diameter + wall_thickness;
+  // Where the out screw ends
+  outer_diameter = thread_inner_diameter + wall_thickness;
+  // The end of the sphere
+  spere_diameter = outer_diameter + wall_thickness;
+  color([0,1,0])
+  difference() {
+    difference() {
+      sphere(d = spere_diameter);
+      sphere(d = outer_diameter);
+    };
+    translate([-(spere_diameter / 2), -(spere_diameter / 2), -(height / 2)])
+      cube(spere_diameter);
+  };
+  difference() {
+    translate([0, 0, -(height / 2)])
+      cylinder(h = wall_thickness, d = spere_diameter - wall_thickness, center = true);
+    translate([0, 0, -(height / 2)])
+      cylinder(h = wall_thickness, d = hole_diameter, center = true);
+  };
+}
+
+// The upper half has the nut
+module draw_upper_half(
+  hole_diameter,
+  wall_thickness,
+  pitch,
+  air_gap,
+  height
+) {
+  draw_upper_sphere(
+    hole_diameter = hole_diameter,
+    wall_thickness = wall_thickness,
+    pitch = pitch,
+    air_gap = air_gap,
+    height = height
+  );
+  draw_nut(
+    hole_diameter = hole_diameter,
+    wall_thickness = wall_thickness,
+    pitch = pitch,
+    air_gap = air_gap,
+    height = height
+  );
+}
+
+// The upper half has the bolt
+module draw_lower_half(
+  hole_diameter,
+  wall_thickness,
+  pitch,
+  air_gap,
+  height
+) {
+  draw_lower_sphere(
+    hole_diameter = hole_diameter,
+    wall_thickness = wall_thickness,
+    pitch = pitch,
+    air_gap = air_gap,
+    height = height
+  );
+  draw_bolt(
+    hole_diameter = hole_diameter,
+    wall_thickness = wall_thickness,
+    pitch = pitch,
+    // air_gap = air_gap,
+    height = height
+  );
+}
+
+
+
+module draw_casing(
+  hole_diameter,
+  wall_thickness,
+  pitch,
+  air_gap,
+  height
+) {
+  difference() {
+    union() {
+      draw_connector(
+        hole_diameter = hole_diameter,
+        wall_thickness = wall_thickness,
+        pitch = pitch,
+        air_gap = air_gap,
+        height = height
+      );
+      draw_shell(
+        hole_diameter = hole_diameter,
+        wall_thickness = wall_thickness,
+        pitch = pitch,
+        air_gap = air_gap,
+        height = height
+      );
+    };
+  }
+}
+
+hole_diameter = 60;
 wall_thickness = 2;
 pitch = 4;
-air_gap = 1;
+air_gap = 2;
+assert(air_gap > 1, "An air gap of 1 mm will not work on the UMS printers");
 height = 10;
+
+//display = "connector";
+//display = "cutout";
+//display = "lower_half";
+//display = "upper_half";
+display = "printable";
+
+if (display == "printable") {
+
+  rotate([180, 0, 0])
+    draw_lower_half(
+      hole_diameter = hole_diameter,
+      wall_thickness = wall_thickness,
+      pitch = pitch,
+      air_gap = air_gap,
+      height = height
+    );
+
+  thread_inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
+  thread_outer_diameter = thread_inner_diameter + wall_thickness;
+  outer_diameter = thread_inner_diameter + wall_thickness;
+  spere_diameter = outer_diameter + wall_thickness;
+
+  translate([spere_diameter + air_gap, 0, 0])
+  draw_upper_half(
+    hole_diameter = hole_diameter,
+    wall_thickness = wall_thickness,
+    pitch = pitch,
+    air_gap = air_gap,
+    height = height
+  );
+}
+
+if (display == "lower_half") {
+  // Show cutout
+  difference() {
+    draw_lower_half(
+      hole_diameter = hole_diameter,
+      wall_thickness = wall_thickness,
+      pitch = pitch,
+      air_gap = air_gap,
+      height = height
+    );
+    translate([-500,0,-500])
+      cube([1000, 100, 1000]);
+  }
+}
+
+if (display == "upper_half") {
+  // Show cutout
+  difference() {
+    draw_upper_half(
+      hole_diameter = hole_diameter,
+      wall_thickness = wall_thickness,
+      pitch = pitch,
+      air_gap = air_gap,
+      height = height
+    );
+    translate([-500,0,-500])
+      cube([1000, 100, 1000]);
+  }
+}
 
 if (display == "cutout") {
   // Show cutout
   difference() {
-    draw_connector();
-      translate([-500,0,-500])
-          cube([1000, 100, 1000]);
+    draw_lower_half(
+      hole_diameter = hole_diameter,
+      wall_thickness = wall_thickness,
+      pitch = pitch,
+      air_gap = air_gap,
+      height = height
+    );
+    translate([-500,0,-500])
+      cube([1000, 100, 1000]);
   }
-} 
-else {
+  difference() {
+    draw_upper_half(
+      hole_diameter = hole_diameter,
+      wall_thickness = wall_thickness,
+      pitch = pitch,
+      air_gap = air_gap,
+      height = height
+    );
+    translate([-500,0,-500])
+      cube([1000, 100, 1000]);
+  }
+}
+ 
+if (display == "connector"){
   draw_connector(
     hole_diameter = hole_diameter,
     wall_thickness = wall_thickness,
@@ -188,79 +421,3 @@ else {
     second_part_translation = [hole_diameter + wall_thickness + pitch + air_gap + wall_thickness, 0, 0]
   );
 }
-
-//color([1,0,0])
-//  cube([25, 1, 1], true);
-
-/*
-
-thread_depth = 20;
-thread_diameter = 90;
-
-$fn=32;
-$slop = 0.075;
-d = thread_diameter;
-pitch = 1; // mm, space between threads
-starts = 3;
-
-
-module outer_screw() {
-  intersection() {
-    threaded_nut(nutwidth= thread_diameter + 20,id = thread_diameter,h = thread_depth,pitch=pitch,starts=starts,anchor=BOTTOM,bevel=false,ibevel=false);
-    cylinder(100, 50, 50);
-  }
-}
-
-
-module inner_screw() {
-  difference() {
-    threaded_rod(l = thread_depth, pitch=pitch, d=d,starts=starts,anchor=BOTTOM,end_len=.44);
-    cylinder(100, 40, 40);
-  }
-}
-
-module display_all() {
-  //translate([200, 0, 0])
-  //  inner_screw();
-  //translate([400, 0, 0])
-  //  outer_screw();
-  difference() {
-    inner_screw();
-      cube([100, 100, 100]);
-  }
-  difference() {
-    outer_screw();
-      cube([100, 100, 100]);
-  }
-
-}
-
-display_all();
-*/
-
-/*
-
-outer_width = 40; // mm
-outer_depth = 30; // mm
-outer_height = 20; // mm
-wall_thickness = 2; // mm
-inner_width = outer_width - wall_thickness; // mm
-inner_depth = outer_depth - wall_thickness; // mm
-inner_height = outer_height - wall_thickness; // mm
-n_teeth = 10;
-x_teeth_length = inner_width / n_teeth;
-y_teeth_length = inner_depth / n_teeth;
-z_teeth_length = inner_height/ n_teeth;
-piezo_diameter = 12; // mm
-piezo_radius = piezo_diameter  / 2; // mm
-cable_diameter = 5; // mm
-cable_radius = cable_diameter / 2; // mm
-
-// The teeth need some air between them.
-// This is the amount of space that each tooth get shorten
-// with at each side
-teeth_air = 0.25; // mm
-
-spacing = 1; // Spacing between the parts, mm
-
-*/
