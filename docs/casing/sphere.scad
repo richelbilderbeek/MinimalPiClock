@@ -88,19 +88,14 @@ module check_params(params) {
 //           |-------| inner_diameter
 //    |----------------------| outer_diameter
 module draw_bolt(
-  hole_diameter,
-  wall_thickness,
-  pitch,
-  height
+  params
 ) {
-  assert(hole_diameter > 0);
-  assert(wall_thickness > 0);
-  assert(pitch > 0);
-  assert(height > 0);
-
-  // diameter where the thread starts
-  bolt_thread_inner_diameter = hole_diameter + wall_thickness;
-  bolt_thread_outer_diameter = bolt_thread_inner_diameter + pitch;
+  check_params(params);
+  height = struct_val(params, "height");
+  pitch = struct_val(params, "pitch");
+  hole_diameter = struct_val(params, "hole_diameter");
+  bolt_thread_inner_diameter = struct_val(params, "bolt_thread_inner_diameter");
+  bolt_thread_outer_diameter = struct_val(params, "bolt_thread_outer_diameter");
   difference() {
     threaded_rod(d = bolt_thread_outer_diameter, l = height, pitch = pitch);
     cylinder(h = height, d = hole_diameter, center = true);
@@ -268,6 +263,7 @@ module draw_upper_sphere(
 module draw_lower_sphere(
   params
 ) {
+  check_params(params);
   height = struct_val(params, "height");
   hole_diameter = struct_val(params, "hole_diameter");
   nut_outer_diameter = struct_val(params, "nut_outer_diameter");
@@ -319,21 +315,11 @@ module draw_upper_half(
 
 // The upper half has the bolt
 module draw_lower_half(
-  params,
-  hole_diameter,
-  wall_thickness,
-  pitch,
-  air_gap,
-  height
+  params
 ) {
-  draw_lower_sphere(params = params);
-  draw_bolt(
-    hole_diameter = hole_diameter,
-    wall_thickness = wall_thickness,
-    pitch = pitch,
-    // air_gap = air_gap,
-    height = height
-  );
+  check_params(params);
+  draw_lower_sphere(params);
+  draw_bolt(params);
 }
 
 
@@ -389,14 +375,7 @@ display = "printable";
 
 if (display == "printable") {
 
-  draw_lower_half(
-    params = params,
-    hole_diameter = 60,
-    wall_thickness = 2,
-    pitch = 4,
-    air_gap = 2,
-    height = 10
-  );
+  draw_lower_half(params);
 
   thread_inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
   thread_outer_diameter = thread_inner_diameter + wall_thickness;
