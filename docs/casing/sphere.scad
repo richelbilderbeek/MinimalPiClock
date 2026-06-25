@@ -56,9 +56,6 @@ module check_params(params) {
   assert(sphere_diameter == hole_diameter + wall_thickness + pitch + air_gap + pitch + wall_thickness + wall_thickness);
 }
 
-params = create_params();
-check_params(params);
-echo_struct(params);
 
 
 // Lower, inner, red, part
@@ -269,34 +266,31 @@ module draw_upper_sphere(
 }
 
 module draw_lower_sphere(
-  hole_diameter,
-  wall_thickness,
-  pitch,
-  air_gap,
-  height
+  params
 ) {
-  thread_inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
-  // Where the thread starts
-  thread_outer_diameter = thread_inner_diameter + wall_thickness;
-  // Where the out screw ends
-  outer_diameter = thread_inner_diameter + wall_thickness;
-  // The end of the sphere
-  spere_diameter = outer_diameter + wall_thickness;
+  height = struct_val(params, "height");
+  hole_diameter = struct_val(params, "hole_diameter");
+  nut_outer_diameter = struct_val(params, "nut_outer_diameter");
+  spere_diameter = struct_val(params, "sphere_diameter");
+  assert(struct_val(params, "sphere_diameter") == spere_diameter);
+  // Outer sphere, upper half cut off
   color([0,1,0])
-  difference() {
     difference() {
-      sphere(d = spere_diameter);
-      sphere(d = outer_diameter);
+      difference() {
+        sphere(d = spere_diameter);
+        sphere(d = nut_outer_diameter);
+      };
+      translate([-(spere_diameter / 2), -(spere_diameter / 2), -(height / 2)])
+        cube(spere_diameter);
     };
-    translate([-(spere_diameter / 2), -(spere_diameter / 2), -(height / 2)])
-      cube(spere_diameter);
-  };
-  difference() {
-    translate([0, 0, -(height / 2)])
-      cylinder(h = wall_thickness, d = spere_diameter - wall_thickness, center = true);
-    translate([0, 0, -(height / 2)])
-      cylinder(h = wall_thickness, d = hole_diameter, center = true);
-  };
+  // Open ring that connects out wall to inner nut
+  color([0.5,1,0.5])
+    difference() {
+      translate([0, 0, -(height / 2)])
+        cylinder(h = wall_thickness, d = nut_outer_diameter, center = true);
+      translate([0, 0, -(height / 2)])
+        cylinder(h = wall_thickness, d = hole_diameter, center = true);
+    };
 }
 
 // The upper half has the nut
@@ -325,19 +319,14 @@ module draw_upper_half(
 
 // The upper half has the bolt
 module draw_lower_half(
+  params,
   hole_diameter,
   wall_thickness,
   pitch,
   air_gap,
   height
 ) {
-  draw_lower_sphere(
-    hole_diameter = hole_diameter,
-    wall_thickness = wall_thickness,
-    pitch = pitch,
-    air_gap = air_gap,
-    height = height
-  );
+  draw_lower_sphere(params = params);
   draw_bolt(
     hole_diameter = hole_diameter,
     wall_thickness = wall_thickness,
@@ -380,8 +369,17 @@ hole_diameter = 60;
 wall_thickness = 2;
 pitch = 4;
 air_gap = 2;
-assert(air_gap > 1, "An air gap of 1 mm will not work on the UMS printers");
 height = 10;
+
+params = create_params(
+  hole_diameter = 60,
+  wall_thickness = 2,
+  pitch = 4,
+  air_gap = 2,
+  height = 10
+);
+check_params(params);
+echo_struct(params);
 
 //display = "connector";
 //display = "cutout";
@@ -392,11 +390,12 @@ display = "printable";
 if (display == "printable") {
 
   draw_lower_half(
-    hole_diameter = hole_diameter,
-    wall_thickness = wall_thickness,
-    pitch = pitch,
-    air_gap = air_gap,
-    height = height
+    params = params,
+    hole_diameter = 60,
+    wall_thickness = 2,
+    pitch = 4,
+    air_gap = 2,
+    height = 10
   );
 
   thread_inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
