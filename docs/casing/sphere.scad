@@ -1,6 +1,66 @@
 include <../../../BOSL2/std.scad>
 include <../../../BOSL2/threading.scad>
 
+include <../../../BOSL2/std.scad>
+
+function create_params(
+  hole_diameter = 60,
+  wall_thickness = 2,
+  pitch = 4,
+  air_gap = 2,
+  height = 10,
+) 
+  = struct_set(
+    [],  
+    [
+      "hole_diameter", hole_diameter, 
+      "wall_thickness", wall_thickness, 
+      "pitch", pitch, 
+      "air_gap", air_gap, 
+      "height", height,
+      // Helpers
+      "bolt_thread_inner_diameter", hole_diameter + wall_thickness,
+      "bolt_thread_outer_diameter", hole_diameter + wall_thickness + pitch,
+      "nut_thread_inner_diameter",  hole_diameter + wall_thickness + pitch + air_gap,
+      "nut_thread_outer_diameter",  hole_diameter + wall_thickness + pitch + air_gap + pitch,
+      "nut_outer_diameter",         hole_diameter + wall_thickness + pitch + air_gap + pitch + wall_thickness,
+      "sphere_diameter",            hole_diameter + wall_thickness + pitch + air_gap + pitch + wall_thickness + wall_thickness
+    ]
+  );
+
+module check_params(params) {
+  assert(is_struct(params), "params must be a struct. Tip: use 'create_params'");
+
+  hole_diameter = struct_val(params, "hole_diameter");
+  assert(hole_diameter > 0);
+  wall_thickness = struct_val(params, "wall_thickness");
+  assert(wall_thickness > 0);
+  pitch = struct_val(params, "pitch");
+  assert(pitch > 0);
+  air_gap = struct_val(params, "air_gap");
+  assert(air_gap > 0); 
+  assert(air_gap > 1, "An air gap between 0-1 mm is too narrow for the screw to turn"); 
+  height = struct_val(params, "height");
+  assert(height > 0);
+  bolt_thread_inner_diameter = struct_val(params, "bolt_thread_inner_diameter");
+  assert(bolt_thread_inner_diameter == hole_diameter + wall_thickness);
+  bolt_thread_outer_diameter = struct_val(params, "bolt_thread_outer_diameter");
+  assert(bolt_thread_outer_diameter == hole_diameter + wall_thickness + pitch);
+  nut_thread_inner_diameter = struct_val(params, "nut_thread_inner_diameter");
+  assert(nut_thread_inner_diameter == hole_diameter + wall_thickness + pitch + air_gap);
+  nut_thread_outer_diameter = struct_val(params, "nut_thread_outer_diameter");
+  assert(nut_thread_outer_diameter == hole_diameter + wall_thickness + pitch + air_gap + pitch);
+  nut_outer_diameter = struct_val(params, "nut_outer_diameter");
+  assert(nut_outer_diameter == hole_diameter + wall_thickness + pitch + air_gap + pitch + wall_thickness);
+  sphere_diameter = struct_val(params, "sphere_diameter");
+  assert(sphere_diameter == hole_diameter + wall_thickness + pitch + air_gap + pitch + wall_thickness + wall_thickness);
+}
+
+params = create_params();
+check_params(params);
+echo_struct(params);
+
+
 // Lower, inner, red, part
 // outer_diameter: the outer diameter of the part, where the thread ends
 // inner_diameter: the diameter of the hole
@@ -42,10 +102,10 @@ module draw_bolt(
   assert(height > 0);
 
   // diameter where the thread starts
-  screw_inner_diameter = hole_diameter + wall_thickness;
-  screw_outer_diameter = screw_inner_diameter + pitch;
+  bolt_thread_inner_diameter = hole_diameter + wall_thickness;
+  bolt_thread_outer_diameter = bolt_thread_inner_diameter + pitch;
   difference() {
-    threaded_rod(d = screw_outer_diameter, l = height, pitch = pitch);
+    threaded_rod(d = bolt_thread_outer_diameter, l = height, pitch = pitch);
     cylinder(h = height, d = hole_diameter, center = true);
   }
 }
@@ -64,22 +124,22 @@ module draw_nut(
   assert(air_gap > 0);
   assert(height > 0);
   // Where the thread end
-  thread_inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
+  nut_thread_inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
   // Where the thread starts
-  thread_outer_diameter = thread_inner_diameter + wall_thickness;
+  nut_thread_outer_diameter = nut_thread_inner_diameter + wall_thickness;
   // Where the object end
-  outer_diameter = thread_inner_diameter + wall_thickness;
+  nut_outer_diameter = nut_thread_outer_diameter + wall_thickness;
   intersection() {
     threaded_nut(
       shape = "square", 
-      nutwidth = outer_diameter, 
-      id = thread_inner_diameter, 
+      nutwidth = nut_thread_outer_diameter, 
+      id = nut_thread_inner_diameter, 
       h = height, 
       pitch = pitch,
       ibevel = false,
       spin = 180
     );  
-    cylinder(height, d = outer_diameter, center = true);
+    cylinder(height, d = nut_outer_diameter, center = true);
 
   }
 }
