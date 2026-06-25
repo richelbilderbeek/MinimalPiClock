@@ -236,28 +236,24 @@ module draw_shell(
 }
 
 module draw_upper_sphere(
-  hole_diameter,
-  wall_thickness,
-  pitch,
-  air_gap,
-  height
+  params
 ) {
-  thread_inner_diameter = hole_diameter + wall_thickness + pitch + air_gap;
-  // Where the thread starts
-  thread_outer_diameter = thread_inner_diameter + wall_thickness;
-  // Where the out screw ends
-  outer_diameter = thread_inner_diameter + wall_thickness;
-  // The end of the sphere
-  spere_diameter = outer_diameter + wall_thickness;
+  check_params(params);
+  height = struct_val(params, "height");
+  hole_diameter = struct_val(params, "hole_diameter");
+  nut_outer_diameter = struct_val(params, "nut_outer_diameter");
+  spere_diameter = struct_val(params, "sphere_diameter");
+  assert(struct_val(params, "sphere_diameter") == spere_diameter);
+  // Outer sphere, lower half cut off
   color([0,1,0])
-  difference() {
     difference() {
-      sphere(d = spere_diameter);
-      sphere(d = outer_diameter);
+      difference() {
+        sphere(d = spere_diameter);
+        sphere(d = nut_outer_diameter);
+      };
+      translate([-(spere_diameter / 2), -(spere_diameter / 2), -spere_diameter - (height / 2)])
+        cube(spere_diameter);
     };
-    translate([-(spere_diameter / 2), -(spere_diameter / 2), -spere_diameter - (height / 2)])
-    cube(spere_diameter);
-  }
 }
 
 module draw_lower_sphere(
@@ -291,19 +287,15 @@ module draw_lower_sphere(
 
 // The upper half has the nut
 module draw_upper_half(
+  params,
   hole_diameter,
   wall_thickness,
   pitch,
   air_gap,
   height
 ) {
-  draw_upper_sphere(
-    hole_diameter = hole_diameter,
-    wall_thickness = wall_thickness,
-    pitch = pitch,
-    air_gap = air_gap,
-    height = height
-  );
+  check_params(params);
+  draw_upper_sphere(params);
   draw_nut(
     hole_diameter = hole_diameter,
     wall_thickness = wall_thickness,
@@ -385,6 +377,7 @@ if (display == "printable") {
   translate([spere_diameter + air_gap, 0, 0])
   rotate([180, 0, 0])
   draw_upper_half(
+    params = params,
     hole_diameter = hole_diameter,
     wall_thickness = wall_thickness,
     pitch = pitch,
