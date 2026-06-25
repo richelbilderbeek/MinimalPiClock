@@ -1,5 +1,19 @@
 # Casing
 
+- OpenSCAD file: [`sphere.scad`](sphere.scad)
+
+I designed the casing in OpenSCAD:
+
+![Casing, in OpenSCAD](sphere_openscad.png)
+
+I used two OpenSCAD libraries:
+
+- [BOSL2](https://github.com/BelfrySCAD/BOSL2): for the thread
+- [text_on_OpenSCAD](https://github.com/brodykenrick/text_on_OpenSCAD):
+  for the text on the machine
+
+## History of the casing
+
 ## Six pieces box
 
 My first real casing design, in OpenSCAD:
@@ -45,8 +59,4 @@ However, how to connect the lid?
 I decided to start using a screw-on approach. Then, I realized,
 that I might as well make the clock spherical: it fits the theme better.
 
-## Spherical design
-
-For the screw, I dediced I needed to use
-[the Belfry OpenSCAD Library v2](https://github.com/BelfrySCAD/BOSL2).
-
+This is how I landed on the final design.
