@@ -6,7 +6,7 @@ include <../../../BOSL2/std.scad>
 // From https://github.com/brodykenrick/text_on_OpenSCAD
 include <../../../text_on_OpenSCAD/text_on.scad>
 
-// - Make the ring between the bolt and the lower sphere
+// - [DONE] Make the ring between the bolt and the lower sphere
 //   go down the either sphere: this reduces the need for scaffolding
 //   and makes it sturdier
 // - Same for the upper ring
@@ -240,14 +240,18 @@ module draw_lower_sphere(params)
         translate([0, 0, -spere_diameter])
           cylinder(spere_diameter, d = speaker_hole_diameter);
     }
-  // Open ring that connects out wall to inner nut
   color([0.5,1,0.5])
+    // Make the open ring go down directly to prevent scaffolding
+    intersection() {
+      // Open ring that connects out wall to inner nut
       difference() {
-        translate([0, 0, -(height / 2)])
-          cylinder(h = wall_thickness, d = nut_outer_diameter, center = true);
-        translate([0, 0, -(height / 2)])
-          cylinder(h = wall_thickness, d = hole_diameter, center = true);
-      };
+        translate([0, 0, -(height / 2) - (spere_diameter / 2)])
+          cylinder(h = spere_diameter, d = nut_outer_diameter, center = true);
+        translate([0, 0, -(height / 2) - (spere_diameter / 2)])
+          cylinder(h = spere_diameter, d = hole_diameter, center = true);
+      }
+      sphere(d = spere_diameter);
+    };
 }
 
 // The upper half has the nut
