@@ -6,9 +6,6 @@ include <../../../BOSL2/std.scad>
 // From https://github.com/brodykenrick/text_on_OpenSCAD
 include <../../../text_on_OpenSCAD/text_on.scad>
 
-// - For printing, put the spheres with the opening down:
-//   this puts the scaffoling on the inside of the sphere, which
-//   is prettier
 // - Put the holes at the lower part:
 //   the beeper should be at the side of the text 'Minimal Pi Clock,
 //   where the power cord needs to go at the other side
@@ -25,7 +22,7 @@ params = create_params(
   speaker_hole_diameter = 3.0
 );
 // Either display to print or display to check
-display_to_print = false;
+display_to_print = true;
 
 if (struct_val(params, "wall_thickness") <= 2.0) {
   echo("Warning: a wall thickness below 2 mm results in a fragile casing");
@@ -285,12 +282,12 @@ module draw_lower_half(params)
 // Program starts here
 //-----------------------------------------------------------------------
 if (display_to_print) {
-
-  draw_lower_half(params);
+  // Make the outsides be up; only scaffolding marks on the inside
+  draw_upper_half(params);
   spere_diameter = struct_val(params, "sphere_diameter");
   translate([spere_diameter + 1, 0, 0])
   rotate([180, 0, 0])
-  draw_upper_half(params);
+  draw_lower_half(params);
 }
 else
 {
