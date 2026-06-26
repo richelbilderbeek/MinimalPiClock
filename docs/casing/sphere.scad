@@ -4,7 +4,7 @@ include <../../../BOSL2/threading.scad>
 include <../../../BOSL2/std.scad>
 
 // From https://github.com/brodykenrick/text_on_OpenSCAD
-include <../../../text_on_OpenSCAD/text_on.scad>
+use <../../../text_on_OpenSCAD/text_on.scad>
 
 pi = 3.141592653589793238462643383279502884197;
 
@@ -16,15 +16,17 @@ params = create_params(
   height = 10,
   font_size = 7,
   wire_hole_diameter = 3.4 + 1.0, // Add uncertainty
-  speaker_hole_diameter = 2.0 + 1.0 // Add uncertainty
+  speaker_hole_diameter = 2.0 + 1.0, // Add uncertainty
+  holes_angle = 70
 );
 // Either display to print or display to check
 // 0: to print
 // 1: assambled
 // 2: cutout
 // 3: cutout
-display_mode = 1;
+display_mode = 0;
 
+// Some warnings
 if (struct_val(params, "wall_thickness") <= 2.0) {
   echo("Warning: a wall thickness below 2 mm results in a fragile casing");
 }
@@ -38,7 +40,8 @@ function create_params(
   height,
   font_size,
   wire_hole_diameter,
-  speaker_hole_diameter
+  speaker_hole_diameter,
+  holes_angle
 ) 
   = struct_set(
     [],  
@@ -51,6 +54,7 @@ function create_params(
       "font_size", font_size,
       "wire_hole_diameter", wire_hole_diameter,
       "speaker_hole_diameter", speaker_hole_diameter,
+      "holes_angle", holes_angle,
       // Helpers
       "bolt_thread_inner_diameter", hole_diameter + wall_thickness,
       "bolt_thread_outer_diameter", hole_diameter + wall_thickness + pitch,
@@ -77,16 +81,21 @@ module check_params(params)
   nut_thread_outer_diameter = struct_val(params, "nut_thread_outer_diameter");
   nut_outer_diameter = struct_val(params, "nut_outer_diameter");
   sphere_diameter = struct_val(params, "sphere_diameter");
-  wire_hole_diameter = struct_val(params, "wire_hole_diameter");
   font_size = struct_val(params, "font_size");
+  wire_hole_diameter = struct_val(params, "wire_hole_diameter");
+  speaker_hole_diameter = struct_val(params, "speaker_hole_diameter");
+  holes_angle = struct_val(params, "holes_angle");
 
   // Variables must make sense
   assert(wall_thickness > 0);
   assert(pitch > 0);
   assert(air_gap > 0); 
   assert(height > 0);
-  assert(wire_hole_diameter > 0);
   assert(font_size > 0);
+  assert(wire_hole_diameter > 0);
+  assert(speaker_hole_diameter > 0);
+  assert(holes_angle > 0);
+  assert(holes_angle < 90);
 
   // Diameters go up
   assert(hole_diameter > 0);
@@ -181,11 +190,10 @@ module draw_sphere(params)
   spere_diameter = struct_val(params, "sphere_diameter");
   assert(struct_val(params, "sphere_diameter") == spere_diameter);
   // Outer sphere, lower half cut off
-  color([0,1,0])
-    difference() {
-      sphere(d = spere_diameter);
-      sphere(d = nut_outer_diameter);
-    };
+  difference() {
+    sphere(d = spere_diameter);
+    sphere(d = nut_outer_diameter);
+  };
 }
 
 
@@ -232,9 +240,6 @@ module draw_lower_sphere_without_holes(params)
   nut_outer_diameter = struct_val(params, "nut_outer_diameter");
   spere_diameter = struct_val(params, "sphere_diameter");
   wall_thickness = struct_val(params, "wall_thickness");
-  wire_hole_diameter = struct_val(params, "wire_hole_diameter");
-  speaker_hole_diameter = struct_val(params, "speaker_hole_diameter");
-  // Outer sphere, upper half cut off
   color([0,1,0])
     difference() {
       draw_sphere(params);
@@ -260,20 +265,18 @@ module draw_lower_sphere(params)
 {
   check_params(params);
   height = struct_val(params, "height");
-  hole_diameter = struct_val(params, "hole_diameter");
-  nut_outer_diameter = struct_val(params, "nut_outer_diameter");
   spere_diameter = struct_val(params, "sphere_diameter");
-  wall_thickness = struct_val(params, "wall_thickness");
   wire_hole_diameter = struct_val(params, "wire_hole_diameter");
   speaker_hole_diameter = struct_val(params, "speaker_hole_diameter");
-  // Outer sphere, upper half cut off
+  holes_angle = struct_val(params, "holes_angle");
+  // Draw sphere with connector to bolt, then cut holes
   color([0,1,0])
     difference() {
     draw_lower_sphere_without_holes(params);
-    rotate([70, 0, 0])
+    rotate([holes_angle, 0, 0])
       translate([0, 0, -spere_diameter])
         cylinder(spere_diameter, d = wire_hole_diameter);
-      rotate([-70, 0, 0])
+      rotate([-holes_angle, 0, 0])
         translate([0, 0, -spere_diameter])
           cylinder(spere_diameter, d = speaker_hole_diameter);
     }
