@@ -25,7 +25,7 @@ params = create_params(
   // 3: assambled
   // 4: assambled, cutout from left to right
   // 5: assambled, cutout from front to back
-  display_mode = 5
+  display_mode = 0
 );
 
 // Some warnings
