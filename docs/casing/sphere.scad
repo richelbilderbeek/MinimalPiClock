@@ -17,14 +17,16 @@ params = create_params(
   font_size = 7,
   wire_hole_diameter = 3.4 + 1.0, // Add uncertainty
   speaker_hole_diameter = 2.0 + 1.0, // Add uncertainty
-  holes_angle = 70
+  holes_angle = 70,
+  // Either display to print or display to check
+  // 0: to print, both
+  // 1: to print, lower half, with wire holes
+  // 2: to print, upper half, with text
+  // 3: assambled
+  // 4: assambled, cutout from left to right
+  // 5: assambled, cutout from front to back
+  display_mode = 5
 );
-// Either display to print or display to check
-// 0: to print
-// 1: assambled
-// 2: cutout
-// 3: cutout
-display_mode = 0;
 
 // Some warnings
 if (struct_val(params, "wall_thickness") <= 2.0) {
@@ -41,7 +43,8 @@ function create_params(
   font_size,
   wire_hole_diameter,
   speaker_hole_diameter,
-  holes_angle
+  holes_angle,
+  display_mode
 ) 
   = struct_set(
     [],  
@@ -55,6 +58,7 @@ function create_params(
       "wire_hole_diameter", wire_hole_diameter,
       "speaker_hole_diameter", speaker_hole_diameter,
       "holes_angle", holes_angle,
+      "display_mode", display_mode,
       // Helpers
       "bolt_thread_inner_diameter", hole_diameter + wall_thickness,
       "bolt_thread_outer_diameter", hole_diameter + wall_thickness + pitch,
@@ -85,6 +89,7 @@ module check_params(params)
   wire_hole_diameter = struct_val(params, "wire_hole_diameter");
   speaker_hole_diameter = struct_val(params, "speaker_hole_diameter");
   holes_angle = struct_val(params, "holes_angle");
+  display_mode = struct_val(params, "display_mode");
 
   // Variables must make sense
   assert(wall_thickness > 0);
@@ -96,6 +101,8 @@ module check_params(params)
   assert(speaker_hole_diameter > 0);
   assert(holes_angle > 0);
   assert(holes_angle < 90);
+  assert(display_mode >= 0);
+  assert(display_mode <= 5);
 
   // Diameters go up
   assert(hole_diameter > 0);
@@ -299,48 +306,64 @@ module draw_lower_half(params)
 }
 
 //-----------------------------------------------------------------------
+// Displayal
+//-----------------------------------------------------------------------
+module display(params)
+{
+  check_params(params);
+  display_mode = struct_val(params, "display_mode");
+  if (display_mode == 0 || display_mode == 1 || display_mode == 2) 
+  {
+    // Make the outsides be up; only scaffolding marks on the inside
+    if (display_mode == 0 || display_mode == 2)
+    {
+      draw_upper_half(params);
+    }
+    if (display_mode == 0 || display_mode == 1)
+    {
+      spere_diameter = struct_val(params, "sphere_diameter");
+      translate([spere_diameter + 1, 0, 0])
+      rotate([180, 0, 0])
+      draw_lower_half(params);
+    }
+  }
+  else if (display_mode == 3) 
+  {
+    draw_lower_half(params);
+    draw_upper_half(params);
+  }
+  else if (display_mode == 4) 
+  {
+    // Show cutout
+    difference() {
+      draw_lower_half(params);
+      translate([-500,0,-500])
+        cube([1000, 100, 1000]);
+    }
+    difference() {
+      draw_upper_half(params);
+      translate([-500,0,-500])
+        cube([1000, 100, 1000]);
+    }
+  } 
+  else if (display_mode == 5) 
+  {
+    // Show cutout
+    difference() {
+      draw_lower_half(params);
+      translate([0,-500,-500])
+        cube([100, 1000, 1000]);
+    }
+    difference() {
+      draw_upper_half(params);
+      translate([0,-500,-500])
+        cube([100, 1000, 1000]);
+    }
+  } 
+
+}
+
+//-----------------------------------------------------------------------
 // Program starts here
 //-----------------------------------------------------------------------
-if (display_mode == 0) 
-{
-  // Make the outsides be up; only scaffolding marks on the inside
-  draw_upper_half(params);
-  spere_diameter = struct_val(params, "sphere_diameter");
-  translate([spere_diameter + 1, 0, 0])
-  rotate([180, 0, 0])
-  draw_lower_half(params);
-}
-else if (display_mode == 1) 
-{
-  draw_lower_half(params);
-  draw_upper_half(params);
-}
-else if (display_mode == 2) 
-{
-  // Show cutout
-  difference() {
-    draw_lower_half(params);
-    translate([-500,0,-500])
-      cube([1000, 100, 1000]);
-  }
-  difference() {
-    draw_upper_half(params);
-    translate([-500,0,-500])
-      cube([1000, 100, 1000]);
-  }
-} 
-else if (display_mode == 3) 
-{
-  // Show cutout
-  difference() {
-    draw_lower_half(params);
-    translate([0,-500,-500])
-      cube([100, 1000, 1000]);
-  }
-  difference() {
-    draw_upper_half(params);
-    translate([0,-500,-500])
-      cube([100, 1000, 1000]);
-  }
-} 
-    
+display(params);
