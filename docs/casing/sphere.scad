@@ -16,10 +16,12 @@ include <../../../text_on_OpenSCAD/text_on.scad>
 // - Put the holes at the lower part:
 //   the beeper should be at the side of the text 'Minimal Pi Clock,
 //   where the power cord needs to go at the other side
+// - Make the wall thicker than 2 millimeters
+pi = 3.141592653589793238462643383279502884197;
 
 params = create_params(
   hole_diameter = 60,
-  wall_thickness = 2,
+  wall_thickness = pi,
   pitch = 4,
   air_gap = 2,
   height = 10,
@@ -29,6 +31,11 @@ params = create_params(
 );
 // Either display to print or display to check
 display_to_print = true;
+
+if (struct_val(params, "wall_thickness") <= 2.0) {
+  echo("Warning: a wall thickness below 2 mm results in a fragile casing");
+}
+
 
 function create_params(
   hole_diameter,
@@ -99,7 +106,6 @@ module check_params(params)
 
   // Other constraints
   assert(air_gap > 1, "An air gap between 0-1 mm is too narrow for the screw to turn"); 
-
 }
 
 
