@@ -6,17 +6,12 @@ include <../../../BOSL2/std.scad>
 // From https://github.com/brodykenrick/text_on_OpenSCAD
 include <../../../text_on_OpenSCAD/text_on.scad>
 
-// - [DONE] Make the ring between the bolt and the lower sphere
-//   go down the either sphere: this reduces the need for scaffolding
-//   and makes it sturdier
-// - Same for the upper ring
 // - For printing, put the spheres with the opening down:
 //   this puts the scaffoling on the inside of the sphere, which
 //   is prettier
 // - Put the holes at the lower part:
 //   the beeper should be at the side of the text 'Minimal Pi Clock,
 //   where the power cord needs to go at the other side
-// - Make the wall thicker than 2 millimeters
 pi = 3.141592653589793238462643383279502884197;
 
 params = create_params(
@@ -30,7 +25,7 @@ params = create_params(
   speaker_hole_diameter = 3.0
 );
 // Either display to print or display to check
-display_to_print = true;
+display_to_print = false;
 
 if (struct_val(params, "wall_thickness") <= 2.0) {
   echo("Warning: a wall thickness below 2 mm results in a fragile casing");
@@ -213,6 +208,21 @@ module draw_upper_sphere(params)
       translate([-(spere_diameter / 2), -(spere_diameter / 2), -spere_diameter - (height / 2)])
         cube(spere_diameter);
     };
+  // Connect sphere to nut
+  color([0.5,1,0.5])
+    // Make the open ring go down directly to prevent scaffolding
+    intersection() {
+      // Open ring that connects out wall to nut
+      difference() {
+        translate([0, 0, +(height / 2) + (spere_diameter / 2)])
+          cylinder(h = spere_diameter, d = nut_outer_diameter, center = true);
+        translate([0, 0, +(height / 2) + (spere_diameter / 2)])
+          cylinder(h = spere_diameter, d = hole_diameter, center = true);
+      }
+      sphere(d = spere_diameter);
+    };
+
+
   text_on_sphere(t = "Minimal Pi Clock", r = spere_diameter / 2, size = font_size);
 }
 
@@ -240,10 +250,11 @@ module draw_lower_sphere(params)
         translate([0, 0, -spere_diameter])
           cylinder(spere_diameter, d = speaker_hole_diameter);
     }
+  // Connect sphere to bolt
   color([0.5,1,0.5])
     // Make the open ring go down directly to prevent scaffolding
     intersection() {
-      // Open ring that connects out wall to inner nut
+      // Open ring that connects out wall to inner bolt
       difference() {
         translate([0, 0, -(height / 2) - (spere_diameter / 2)])
           cylinder(h = spere_diameter, d = nut_outer_diameter, center = true);
