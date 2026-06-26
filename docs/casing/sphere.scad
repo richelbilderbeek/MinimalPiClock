@@ -6,9 +6,6 @@ include <../../../BOSL2/std.scad>
 // From https://github.com/brodykenrick/text_on_OpenSCAD
 include <../../../text_on_OpenSCAD/text_on.scad>
 
-// - Put the holes at the lower part:
-//   the beeper should be at the side of the text 'Minimal Pi Clock,
-//   where the power cord needs to go at the other side
 pi = 3.141592653589793238462643383279502884197;
 
 params = create_params(
@@ -18,11 +15,15 @@ params = create_params(
   air_gap = 2,
   height = 10,
   font_size = 7,
-  wire_hole_diameter = 3.4,
-  speaker_hole_diameter = 3.0
+  wire_hole_diameter = 3.4 + 1.0, // Add uncertainty
+  speaker_hole_diameter = 2.0 + 1.0 // Add uncertainty
 );
 // Either display to print or display to check
-display_to_print = true;
+// 0: to print
+// 1: assambled
+// 2: cutout
+// 3: cutout
+display_mode = 1;
 
 if (struct_val(params, "wall_thickness") <= 2.0) {
   echo("Warning: a wall thickness below 2 mm results in a fragile casing");
@@ -223,7 +224,7 @@ module draw_upper_sphere(params)
   text_on_sphere(t = "Minimal Pi Clock", r = spere_diameter / 2, size = font_size);
 }
 
-module draw_lower_sphere(params)
+module draw_lower_sphere_without_holes(params)
 {
   check_params(params);
   height = struct_val(params, "height");
@@ -236,17 +237,10 @@ module draw_lower_sphere(params)
   // Outer sphere, upper half cut off
   color([0,1,0])
     difference() {
-      difference() {
-        draw_sphere(params);
-        translate([-(spere_diameter / 2), -(spere_diameter / 2), -(height / 2)])
-          cube(spere_diameter);
-      };
-      translate([0, 0, -spere_diameter])
-        cylinder(spere_diameter, d = wire_hole_diameter);
-      rotate([0, 45, 0])
-        translate([0, 0, -spere_diameter])
-          cylinder(spere_diameter, d = speaker_hole_diameter);
-    }
+      draw_sphere(params);
+      translate([-(spere_diameter / 2), -(spere_diameter / 2), -(height / 2)])
+        cube(spere_diameter);
+    };
   // Connect sphere to bolt
   color([0.5,1,0.5])
     // Make the open ring go down directly to prevent scaffolding
@@ -260,6 +254,29 @@ module draw_lower_sphere(params)
       }
       sphere(d = spere_diameter);
     };
+}
+
+module draw_lower_sphere(params)
+{
+  check_params(params);
+  height = struct_val(params, "height");
+  hole_diameter = struct_val(params, "hole_diameter");
+  nut_outer_diameter = struct_val(params, "nut_outer_diameter");
+  spere_diameter = struct_val(params, "sphere_diameter");
+  wall_thickness = struct_val(params, "wall_thickness");
+  wire_hole_diameter = struct_val(params, "wire_hole_diameter");
+  speaker_hole_diameter = struct_val(params, "speaker_hole_diameter");
+  // Outer sphere, upper half cut off
+  color([0,1,0])
+    difference() {
+    draw_lower_sphere_without_holes(params);
+    rotate([70, 0, 0])
+      translate([0, 0, -spere_diameter])
+        cylinder(spere_diameter, d = wire_hole_diameter);
+      rotate([-70, 0, 0])
+        translate([0, 0, -spere_diameter])
+          cylinder(spere_diameter, d = speaker_hole_diameter);
+    }
 }
 
 // The upper half has the nut
@@ -281,7 +298,8 @@ module draw_lower_half(params)
 //-----------------------------------------------------------------------
 // Program starts here
 //-----------------------------------------------------------------------
-if (display_to_print) {
+if (display_mode == 0) 
+{
   // Make the outsides be up; only scaffolding marks on the inside
   draw_upper_half(params);
   spere_diameter = struct_val(params, "sphere_diameter");
@@ -289,7 +307,12 @@ if (display_to_print) {
   rotate([180, 0, 0])
   draw_lower_half(params);
 }
-else
+else if (display_mode == 1) 
+{
+  draw_lower_half(params);
+  draw_upper_half(params);
+}
+else if (display_mode == 2) 
 {
   // Show cutout
   difference() {
@@ -302,5 +325,19 @@ else
     translate([-500,0,-500])
       cube([1000, 100, 1000]);
   }
-}
- 
+} 
+else if (display_mode == 3) 
+{
+  // Show cutout
+  difference() {
+    draw_lower_half(params);
+    translate([0,-500,-500])
+      cube([100, 1000, 1000]);
+  }
+  difference() {
+    draw_upper_half(params);
+    translate([0,-500,-500])
+      cube([100, 1000, 1000]);
+  }
+} 
+    
