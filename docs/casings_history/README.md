@@ -92,7 +92,7 @@ was too thin and needed scaffolding.
 I decided to make both the bolt and nut to extend down/up the entire
 half-sphere, making it sturdier and reduce scaffolds.
 
-![Sphere v0.2](../casing/sphere_openscad.png)
+![Sphere v0.2](../casing/sphere_openscad_v0_2.png)
 
 The PCB fit the casing:
 
