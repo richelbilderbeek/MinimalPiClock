@@ -79,8 +79,6 @@ and worked great!
 
 Then I printed my first sphere:
 
-![My first sphere print](sphere_v0_1.jpg)
-
 ![My first sphere print, inside](sphere_inner_v0_1.jpg)
 
 ![My first sphere print, outside](sphere_outer_v0_1.jpg)
@@ -91,13 +89,11 @@ My first design had a structural weakness:
 the ring that connected the bolt with the outer sphere
 was too thin and needed scaffolding.
 
-![Sphere v0.1](sphere_openscad_v0_1.png)
-
 I decided to make both the bolt and nut to extend down/up the entire
 half-sphere, making it sturdier and reduce scaffolds.
 
-![Sphere v0.2](sphere_openscad.png)
+![Sphere v0.2](../casing/sphere_openscad.png)
 
 The PCB fit the casing:
 
-![Sphere v0.2, with electronics in it](sphere_v0_2.jpg)
+![Sphere v0.2, with electronics in it](../casing/sphere_v0_2.jpg)
