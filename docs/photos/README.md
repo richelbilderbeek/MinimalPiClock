@@ -37,11 +37,14 @@ The Minimal Pi Clock can look many different ways.
 
 ## 2026
 
-
-![Minimal Pi Clock in 2019, PCB front view](20260622_pcb_front.jpg)
+![Minimal Pi Clock in 2026, PCB front view](20260622_pcb_front.jpg)
 
 > PCB is ready, front view
 
-![Minimal Pi Clock in 2019, PCB back view](20260622_pcb_back.jpg)
+![Minimal Pi Clock in 2026, PCB back view](20260622_pcb_back.jpg)
 
 > PCB is ready, back view
+
+![Minimal Pi Clock with spherical casing v0.2](20260627.jpg)
+
+> Minimal Pi Clock with spherical casing v0.2
