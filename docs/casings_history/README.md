@@ -10,12 +10,19 @@ and my first real casing design, in OpenSCAD:
 
 - [six_pieces_box.scad](six_pieces_box.scad)
 
-![Six pieces box](six_pieces_box.png)
-
 I wanted a design without scaffolding, hence I opted
 to glue to pieces together.
 
-However, I was unhappy with this design, as it involved too much glue
+The first prints resulted in six pieces that did not fit together:
+
+![Six pieces box in development](six_pieces_box_development.jpg)
+
+After adding an air gap, the pieces fit together well enough to form a box:
+
+![Six pieces box](six_pieces_box.png)
+
+I was happy I was able to create this box.
+However, I was unhappy with its design, as it involved too much glue
 and the glue available to me was not strong enough.
 
 I realized that
@@ -60,7 +67,26 @@ A spherical design for a pi clock felt like a good fit.
 I wanted to have the sphere consists out of two half-spheres
 that can be screwed together.
 
+First, I designed the screw,
+as I wanted to make sure that it could work:
+
+![My screw prints](screw.jpg)
+
+The screw at the left did not work properly,
+with an air gap of 1 millimeter.
+The screw at the right had an air gap of 2 millimeter
+and worked great!
+
+Then I printed my first sphere:
+
+![My first sphere print](sphere_v0_1.jpg)
+
+![](sphere_inner_v0_1.jpg)
+
+![](sphere_outer_v0_1.jpg)
+
 It worked great!
+
 
 My first design had a structural weakness:
 the ring that connected the bolt with the outer sphere
@@ -72,3 +98,7 @@ I decided to make both the bolt and nut to extend down/up the entire
 half-sphere, making it sturdier and reduce scaffolds.
 
 ![Sphere v0.2](sphere_openscad.png)
+
+The PCB fit the casing:
+
+![Sphere v0.2, with electronics in it](sphere_v0_2.jpg)

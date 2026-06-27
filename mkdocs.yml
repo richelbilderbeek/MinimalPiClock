@@ -11,8 +11,10 @@ nav:
   - Code: src/README.md
   - Schematic: schematic/README.md
   - Casing: casing/README.md
-  - FAQ: faq.md
-  - Contributing: CONTRIBUTING.md
+  - Misc:
+    - Casing's history: casings_history/README.md
+    - Contributing: CONTRIBUTING.md
+    - FAQ: faq.md
 
 theme:
   name: material

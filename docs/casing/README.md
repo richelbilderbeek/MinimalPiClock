@@ -4,7 +4,7 @@
 
 I designed the casing in OpenSCAD:
 
-![Casing, in OpenSCAD](sphere_openscad.png)
+![Casing v0.2, in OpenSCAD](sphere_openscad_v0_2.png)
 
 I used two OpenSCAD libraries:
 
@@ -24,4 +24,4 @@ Lower|123
 Upper|138
 Both |?
 
-For historians, see [the casing's history](casings_history.md)
+For historians, see [the casing's history](../casings_history/README.md)
