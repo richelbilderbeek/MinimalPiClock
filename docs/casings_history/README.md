@@ -81,12 +81,11 @@ Then I printed my first sphere:
 
 ![My first sphere print](sphere_v0_1.jpg)
 
-![](sphere_inner_v0_1.jpg)
+![My first sphere print, inside](sphere_inner_v0_1.jpg)
 
-![](sphere_outer_v0_1.jpg)
+![My first sphere print, outside](sphere_outer_v0_1.jpg)
 
 It worked great!
-
 
 My first design had a structural weakness:
 the ring that connected the bolt with the outer sphere

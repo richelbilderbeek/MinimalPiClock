@@ -20,7 +20,7 @@ spheres.
 
 Shere|Printing time (mins)
 -----|--------------------
-Lower|123 
+Lower|123
 Upper|138
 Both |?
 
