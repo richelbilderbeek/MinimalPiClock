@@ -18,10 +18,20 @@ to have one print. This may be slower, however, than (displaying and) printing
 each half seperately, as the 3D printer head needs to move between two half
 spheres.
 
-Shere|Printing time (mins)
------|--------------------
-Lower|123
-Upper|138
-Both |?
+???- question "Can you give some measured print times?"
+
+    Yes, here are measured print times:
+
+    Shere|Printing time (mins)
+    -----|--------------------
+    Lower|123
+    Upper|138
+    Both |267
+
+    From these numbers, we can conclude that it is shorter to print each
+    half-sphere in isolation: it takes 261 mins for printing each half
+    in isolation winning 6 minutes. However, in those 6 minutes
+    between prints, time is lost by manually removing the printed first half
+    and starting the printer to do the other half.
 
 For historians, see [the casing's history](../casings_history/README.md)
