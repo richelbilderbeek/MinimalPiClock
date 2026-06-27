@@ -12,6 +12,12 @@ I used two OpenSCAD libraries:
 - [text_on_OpenSCAD](https://github.com/brodykenrick/text_on_OpenSCAD):
   for the text on the machine
 
+The code has multiple modes to display the casing.
+There is a mode for displaying the two half-spheres side-by-side,
+to have one print. This may be slower, however, than (displaying and) printing
+each half seperately, as the 3D printer head needs to move between two half
+spheres.
+
 ## History of the casing
 
 ## Six pieces box
@@ -60,3 +66,16 @@ I decided to start using a screw-on approach. Then, I realized,
 that I might as well make the clock spherical: it fits the theme better.
 
 This is how I landed on the final design.
+
+## Sphere
+
+The sphere design worked great!
+
+My first design had a structural weakness:
+the ring that connected the bolt with the outer sphere
+was too thin and needed scaffolding.
+
+![Sphere v0.1](sphere_openscad_v0_1.png)
+
+I decided to make both the bolt and nut to extend down/up the entire
+half-sphere, making it sturdier and reduce scaffolds.

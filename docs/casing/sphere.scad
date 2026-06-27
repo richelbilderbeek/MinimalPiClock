@@ -9,23 +9,22 @@ use <../../../text_on_OpenSCAD/text_on.scad>
 pi = 3.141592653589793238462643383279502884197;
 
 params = create_params(
-  hole_diameter = 60,
-  wall_thickness = pi,
-  pitch = 4,
-  air_gap = 2,
-  height = 10,
-  font_size = 7,
-  wire_hole_diameter = 3.4 + 1.0, // Add uncertainty
-  speaker_hole_diameter = 2.0 + 1.0, // Add uncertainty
-  holes_angle = 70,
-  // Either display to print or display to check
+  hole_diameter = 60, // The diameter of the hollow sphere that would fit in the casing
+  wall_thickness = pi, // Thickness of walls
+  pitch = 4, // Depth of the threading grooves
+  air_gap = 2, // The gap between nut and bolt
+  height = 10, // The height of the nut and bolt
+  font_size = 7, // The size of the letters on the casing
+  wire_hole_diameter = 3.4 + 1.0, // Add uncertainty // The hole for a wire
+  speaker_hole_diameter = 2.0 + 1.0, // Add uncertainty // The hole for a speaker
+  holes_angle = 70, // The height of the wire and speaker holes
+  display_mode = 4 // How the casing is displayed:
   // 0: to print, both
   // 1: to print, lower half, with wire holes
   // 2: to print, upper half, with text
   // 3: assambled
   // 4: assambled, cutout from left to right
   // 5: assambled, cutout from front to back
-  display_mode = 0
 );
 
 // Some warnings

@@ -1,10 +1,16 @@
 # FAQ
 
-## How to set the time
+## What does the clock do?
+
+It beeps at pi o'clock (i.e. 3:14 PM),
+for a bit longer than three seconds,
+at a frequency a bit higher than 3 kHz.
+
+## How to set the time?
 
 Unplug its power. Plug it in at pi o'clock.
 
-## How to read the time
+## How to read the time?
 
 You cannot. It only beeps at pi o'clock.
 
@@ -34,6 +40,8 @@ One example is
 [my 'Build a bare-bone machine' workshop](https://richelbilderbeek.github.io/build_bare_bone_arduino_machine_workshop/)
 at [the Uppsala Makerspace.](https://www.uppsalamakerspace.se/).
 
-## Do you think using an ATMEGA328 chip is overkill here?
+## Do you think using an ATmega328P chip is overkill here?
 
 Yes.
+
+I decided to use it anyways, as I have access to mostly Arduino Uno's.
