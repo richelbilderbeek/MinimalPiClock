@@ -37,6 +37,18 @@ The Minimal Pi Clock can look many different ways.
 
 ## 2026
 
+![Minimal Pi Clock, point-to-point soldering](20260629_1.jpg)
+
+> Minimal Pi Clock, point-to-point soldering
+
+![Minimal Pi Clock, point-to-point soldering](20260629_2.jpg)
+
+> Minimal Pi Clock, point-to-point soldering
+
+![Minimal Pi Clock, point-to-point soldering](20260629_3.jpg)
+
+> Minimal Pi Clock, point-to-point soldering
+
 ![Minimal Pi Clock in 2026, PCB front view](20260622_pcb_front.jpg)
 
 > PCB is ready, front view
